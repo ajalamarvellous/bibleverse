@@ -1,5 +1,4 @@
 import os
-import shutil
 import pprint
 from io import BytesIO
 from urllib.request import urlopen
@@ -27,14 +26,13 @@ def get_embedding_object():
     print("Extracting GloVe embedding...")
     glove2word2vec(embedding_filename, output_file)
     print("Loading GloVe embedding...")
-    # shutil.move(embedding_filename, 'assets')
+    os.remove(embedding_filename)
     zipfile.close()
     glove = KeyedVectors.load_word2vec_format(output_file, binary=False)
     return glove
 
 # Path: home.py
-def verse_for_theme(feeling):
-    print("Welcome to the Bible Verse Finder")
+def verse_for_theme(feeling=input("How are you feeling? ")):
     bible_map = process(PDF_FILE)
     print("Bible map created...")
     print("One minute, creating embedding...")
@@ -42,5 +40,17 @@ def verse_for_theme(feeling):
     print("Embedding created...")
     pprint.pprint(bible_map)
 
+    feeling = feeling.lower().split(' ')
+    feeling_embedding = embedding.get_mean_vector(feeling)
+    similarity = embedding.distances(feeling_embedding, list(bible_map.keys()))
+    idx, l = 0, 1
+    for i, s in enumerate(similarity):
+        if s < l:
+            l = s
+            idx = i
+    key = list(bible_map.keys())[idx]
+    return key
+
 if __name__ == '__main__':
-    main()
+    verses = verse_for_theme()
+    print(verses)
