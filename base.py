@@ -9,7 +9,6 @@ def read_asset(PDF_FILE):
     file = open(PDF_FILE, 'rb')
     pdf_reader = PyPDF2.PdfReader(file)
     txt = []
-
     for pages in pdf_reader.pages:
         txt.append(pages.extract_text())
     return txt
@@ -21,11 +20,13 @@ def process_text(txt):
     whole_text = []
     for page in txt:
         page = page.split('\n \n')
+        # Each page begins with the title of the book, so 
+        # we remove the first item in the list
         for text in page[1:]:
             text = text.split(' \n')
             whole_text.extend([
                 x.strip(' ') for x in text if (
-                    isinstance(x, str) and x != ' '
+                    not x.isdigit() and x != ' ' and x != ''
                     )
                 ])
     return whole_text
@@ -42,15 +43,14 @@ def rejoin_text(txt):
     while n < len(txt):
         try:
             word = txt[n]
-            # checks against number that are still in the dataset and wasn't removed
-            # print(word, len(word))
-            if not word.isdigit():
-                if (not word[-1].isdigit() and not word.isupper()):
-                    word = txt[n] + txt[n+1]
-                    n += 1
-                else:
-                    pass
-                new_txt.append(word)
+            # check if the last character is not a number and word is not in uppercase
+            # uppercase words are usually the verse groups 
+            if (not word[-1].isdigit() and not word.isupper()):
+                word = txt[n] +" "+ txt[n+1]
+                n += 1
+            else:
+                pass
+            new_txt.append(word)
         except Exception as e:
             print(f"An {e} error occured at {n}, \n {txt[n]}")
         n += 1
