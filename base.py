@@ -30,9 +30,36 @@ def process_text(txt):
                 ])
     return whole_text
 
+def rejoin_text(txt):
+    """
+    Rejoin incomplete Bible verses
+
+    Some bible verses (those that occured around the ending of the page)
+    were split into two. This function rejoin those verses.
+    """
+    new_txt = []
+    n = 0
+    while n < len(txt):
+        try:
+            word = txt[n]
+            # checks against number that are still in the dataset and wasn't removed
+            # print(word, len(word))
+            if not word.isdigit():
+                if (not word[-1].isdigit() and not word.isupper()):
+                    word = txt[n] + txt[n+1]
+                    n += 1
+                else:
+                    pass
+                new_txt.append(word)
+        except Exception as e:
+            print(f"An {e} error occured at {n}, \n {txt[n]}")
+        n += 1
+    return new_txt
+            
 def main():
     file = read_asset(PDF_FILE)
     pages = process_text(file)
+    pages = rejoin_text(pages)
     print(pages)
 
 if __name__ == '__main__':
