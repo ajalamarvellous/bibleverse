@@ -65,18 +65,25 @@ def create_map(txt):
     KEY = ''
     for verse in txt:
         if verse.isupper():
-            KEY = verse
+            KEY = verse.lower()
             bible_map[KEY] = []
         else:
             bible_map[KEY].append(verse)
             NEW_GROUP = False
     return bible_map
 
-def process():
+def process(pdf_file=PDF_FILE):
     file = read_asset(PDF_FILE)
     pages = process_text(file)
     pages = rejoin_text(pages)
     bible_maps = create_map(pages)
+    themes = list(bible_maps.keys())
+    for theme in themes:
+        if len(theme.split()) > 1:
+            if theme == "confu sion":
+                bible_maps['confusion'] = bible_maps.pop(theme)
+            elif theme == "everlasting life":
+                bible_maps['eternity'] = bible_maps.pop(theme)
     return bible_maps
     
 if __name__ == '__main__':
