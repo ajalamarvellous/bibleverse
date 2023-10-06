@@ -1,4 +1,5 @@
 import PyPDF2
+import pprint
 
 PDF_FILE = 'assets/Scripture_for_Every_Moment.pdf'
 
@@ -55,12 +56,29 @@ def rejoin_text(txt):
             print(f"An {e} error occured at {n}, \n {txt[n]}")
         n += 1
     return new_txt
-            
+
+def create_map(txt):
+    """
+    Create a map of the Bible verses and their corresponding usecase
+    """
+    bible_map = {}
+    NEW_GROUP = False
+    KEY = ''
+    for verse in txt:
+        if verse.isupper():
+            KEY = verse
+            bible_map[KEY] = []
+        else:
+            bible_map[KEY].append(verse)
+            NEW_GROUP = False
+    return bible_map
+
 def main():
     file = read_asset(PDF_FILE)
     pages = process_text(file)
     pages = rejoin_text(pages)
-    print(pages)
-
+    bible_maps = create_map(pages)
+    pprint.pprint(bible_maps)
+    
 if __name__ == '__main__':
     main()
