@@ -1,5 +1,4 @@
 import PyPDF2
-import pprint
 
 PDF_FILE = 'assets/Scripture_for_Every_Moment.pdf'
 
@@ -73,12 +72,12 @@ def create_map(txt):
             NEW_GROUP = False
     return bible_map
 
-def main():
+def process():
     file = read_asset(PDF_FILE)
     pages = process_text(file)
     pages = rejoin_text(pages)
     bible_maps = create_map(pages)
-    pprint.pprint(bible_maps)
+    return bible_maps
     
 if __name__ == '__main__':
-    main()
+    process()
