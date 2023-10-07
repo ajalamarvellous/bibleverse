@@ -1,5 +1,5 @@
 import streamlit as st
-from base import verse_for_theme
+from base import verse_for_theme, get_objects
 
 
 def main():
