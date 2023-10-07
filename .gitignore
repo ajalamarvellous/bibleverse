@@ -1,2 +1,4 @@
 .venv
 *.log
+*.word2vec
+*/__pycache__/*
