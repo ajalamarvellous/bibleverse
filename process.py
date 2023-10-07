@@ -1,4 +1,12 @@
 import PyPDF2
+import logging 
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    filename=".file.log",
+    format="%(asctime)s %(funcName)s[%(levelname)s]: %(message)s ",
+)
+logger = logging.getLogger()
 
 PDF_FILE = 'assets/Scripture_for_Every_Moment.pdf'
 
@@ -6,11 +14,13 @@ def read_asset(PDF_FILE):
     """
     Read the PDF file and return the text
     """
+    logger.debug(f"Reading file from {PDF_FILE}...")
     file = open(PDF_FILE, 'rb')
     pdf_reader = PyPDF2.PdfReader(file)
     txt = []
     for pages in pdf_reader.pages:
         txt.append(pages.extract_text())
+    logger.debug("All pages retrieved succesfully")
     return txt
 
 def process_text(txt):
@@ -46,13 +56,15 @@ def rejoin_text(txt):
             # check if the last character is not a number and word is not in uppercase
             # uppercase words are usually the verse groups 
             if (not word[-1].isdigit() and not word.isupper()):
+                logger.debug(f"incomplete verse {word}...")
                 word = txt[n] +" "+ txt[n+1]
+                logger.debug(f"New verse returned {word}...")
                 n += 1
             else:
                 pass
             new_txt.append(word)
         except Exception as e:
-            print(f"An {e} error occured at {n}, \n {txt[n]}")
+            logger.error(f"An {e} error occured at {n}, \n {txt[n]}")
         n += 1
     return new_txt
 
@@ -74,9 +86,14 @@ def create_map(txt):
 
 def process(pdf_file=PDF_FILE):
     file = read_asset(PDF_FILE)
+    logger.debug("File read successfully...")
     pages = process_text(file)
+    logger.debug("All pages successfully processed...")
     pages = rejoin_text(pages)
+    logger.debug("All incomplete verses fixed...")
     bible_maps = create_map(pages)
+    logger.debug("Bible thematic map created successfully...")
+
     themes = list(bible_maps.keys())
     for theme in themes:
         if len(theme.split()) > 1:
