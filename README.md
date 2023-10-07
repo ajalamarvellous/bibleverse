@@ -17,30 +17,38 @@ Bibleverse is a commandline and web tool that helps you find the bible verses th
 </div>
 
 
-
 ### Built With
 
 * [PyPDF2](https://pypi.org/project/PyPDF2/)
 * [Gensim](https://pypi.org/project/gensim/)
 * [Streamlit](https://streamlit.io)
 
+## Folder structure
+------------
+```text
+    ├── LICENSE            <- The Project Licence for the project.
+    ├── CONDUCT.md         <- Code of Conduct for contributions.
+    ├── README.md          <- The top-level README about the project.
+    ├── requirements.txt   <- The requirements file for reproducing the project 
+    │                        
+    ├── src                <- Source code for use in this project.
+    │   ├── __init__.py    
+    |   ├── base.py        <- main preprocessing file 
+    |   ├── process.py     <- Preprocessing pdf file to convert to formats usable 
+    |   ├── cli.py         <- script to run the project on the commandline
+    │   └── web.py         <- script to run the project on the web
+    │        
+    ├── assets       
+    │   └─ Scripture_for_Every_Moment.pdf   <- file to load the data from
+    |     
+    └── test    <- test suite for the project
+         └─ test_process.py  <- 
+```
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
 To get started and set up the project in your local environment, please download the packages listed in the requirements
-
-### Prerequisites
-
-You can download them from the terminal from requirements.txt using
-* pip
-  ```sh
-  pip install requirements.txt
-  ```
-* or Conda
-  ```sh
-  conda install requirements.txt
-  ```
 
 ### Installation
 
