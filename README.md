@@ -79,12 +79,12 @@ To try out the software, you can use the commandline or through the web.
 
 To use the commandline
 ```sh
-python cli.py
+python src/cli.py
 ```
 
 To use the web service
 ```sh
-streamlit run web.py
+streamlit run src/web.py
 ```
 Voila, there you go, you have it running on your device
 
