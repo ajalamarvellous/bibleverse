@@ -11,9 +11,16 @@ def main():
         f"Welcome once again {name} and we are glad you came here, \n\
         let us fetch a Bible passage for you and hopefully, we pray it speaks to you"
         ):
-        verse = verse_for_theme(feeling)
-    
-    st.write(verse)
+            bible_map, embedding = get_objects()
+            another = "y"
+            while another == "y":
+                verse = verse_for_theme(feeling, bible_map, embedding)
+                st.write(verse)
+                another = st.text_input("Do you want another verse? (y/n): ").lower()
+                if another == "y":
+                    feeling = st.text_input("what are you also currently feeling that you need a word about: ")
+                else:
+                    break
 
     st.write("we hope it speaks to you and long to see you another time")
 
