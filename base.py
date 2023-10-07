@@ -41,12 +41,14 @@ def get_embedding_object():
     return glove
 
 # Path: home.py
-def verse_for_theme(feeling):
+def get_objects():
     bible_map = process(PDF_FILE)
     logger.debug(f"Bible map created, the key themes {bible_map.keys()}...")
     embedding = get_embedding_object()
     logger.debug("Embedding created...")
-    
+    return bible_map, embedding
+
+def verse_for_theme(feeling, bible_map, embedding):
     feeling = feeling.lower().split(' ')
     logger.debug("Retrieving embedding for input")
     feeling_embedding = embedding.get_mean_vector(feeling)
