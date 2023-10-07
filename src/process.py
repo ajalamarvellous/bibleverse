@@ -41,6 +41,18 @@ def process_text(txt):
                 ])
     return whole_text
 
+def join_text(txt, n):
+    """
+    Join the text into a single string
+    """
+    if (not word[-1].isdigit() and not word.isupper()):
+        logger.debug(f"incomplete verse {word}...")
+        word = txt[n] +" "+ txt[n+1]
+        logger.debug(f"New verse returned {word}...")
+        n += 1
+        word, n = join_text(txt, n)
+    return word, n
+
 def rejoin_text(txt):
     """
     Rejoin incomplete Bible verses
@@ -55,13 +67,14 @@ def rejoin_text(txt):
             word = txt[n]
             # check if the last character is not a number and word is not in uppercase
             # uppercase words are usually the verse groups 
-            if (not word[-1].isdigit() and not word.isupper()):
-                logger.debug(f"incomplete verse {word}...")
-                word = txt[n] +" "+ txt[n+1]
-                logger.debug(f"New verse returned {word}...")
-                n += 1
-            else:
-                pass
+            word, n = join_text(txt, n)
+            # if (not word[-1].isdigit() and not word.isupper()):
+            #     logger.debug(f"incomplete verse {word}...")
+            #     word = txt[n] +" "+ txt[n+1]
+            #     logger.debug(f"New verse returned {word}...")
+            #     n += 1
+            # else:
+            #     pass
             new_txt.append(word)
         except Exception as e:
             logger.error(f"An {e} error occured at {n}, \n {txt[n]}")
